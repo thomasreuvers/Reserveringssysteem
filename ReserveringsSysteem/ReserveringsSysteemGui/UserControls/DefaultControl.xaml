@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="ReserveringsSysteemGui.UserControls.DefaultControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ReserveringsSysteemGui.UserControls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+            <!--Intro-->
+            <StackPanel Grid.Row="1" >
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    <Label x:Name="WelcomeMessage" FontSize="20" FontWeight="Light" FontFamily="helvetica"></Label>
+                    </StackPanel>
+
+                    <!--User choices-->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+
+                        <Button Click="BookBtn_OnClick" Width="50" Height="50" Background="Transparent" BorderThickness="2" BorderBrush="Orange" Margin="5">
+                            <StackPanel Orientation="Vertical">
+                                <iconPacks:PackIconMaterial Kind="Book" 
+                                                            VerticalAlignment="Center" 
+                                                            HorizontalAlignment="Center"
+                                                            Foreground="Orange"/>
+                                <TextBlock VerticalAlignment="Center" FontFamily="helvetica">Book</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button>Choice 1</Button>
+                        <Button Click="LogoutBtn_OnClick" Width="50" Height="50" Background="Transparent" BorderThickness="2" BorderBrush="Orange" Margin="5">
+                            <StackPanel Orientation="Vertical">
+                                <iconPacks:PackIconMaterial Kind="Logout" 
+                                                            VerticalAlignment="Center" 
+                                                            HorizontalAlignment="Center"
+                                                            Foreground="Orange"/>
+                                <TextBlock VerticalAlignment="Center" FontFamily="helvetica">Logout</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+            </StackPanel>
+
+
+        </Grid>
+    </Grid>
+</UserControl>
