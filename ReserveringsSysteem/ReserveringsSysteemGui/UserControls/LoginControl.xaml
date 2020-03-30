@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReserveringsSysteemGui.UserControls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="380">
     <Grid>
@@ -13,86 +14,69 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border CornerRadius="10" Grid.RowSpan="2">
-            <Border.Background>
-                <LinearGradientBrush>
-                    <GradientStop Color="#924114" Offset="0.0"/>
-
-                    <GradientStop Color="#671905" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
+        <materialDesign:Card Grid.RowSpan="2" Background="#116979" Opacity="0.8"/>
 
         <!--Close button-->
-        <Button Click="CloseWindowBtn_OnClick" Grid.Row="0" VerticalAlignment="Top" Width="20" HorizontalAlignment="Right" Margin="6">x</Button>
+        <Button Click="CloseWindowBtn_OnClick" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=ActualHeight}" Height="20" Padding="0,-4,0,0" Margin="5"
+                 Content="x" Foreground="#dee3e2"/>
 
-        <StackPanel Grid.Row="0" VerticalAlignment="Center">
+            <StackPanel Grid.Row="0" VerticalAlignment="Center">
             <Image Source="../Resources/Images/placeholderpng.png" Width="80"/>
-            <TextBlock Text="Cafe Moenen"
-                           FontWeight="Light"
-                           FontFamily="helvetica"
-                           FontSize="22"
-                           Foreground="White"
-                           HorizontalAlignment="Center"/>
+            <TextBlock 
+                    Foreground="#dee3e2"
+                    FontFamily="{DynamicResource MaterialDesignFont}"
+                    Margin="10"
+                    Text="Cafe Moenen"
+                    FontSize="20"
+                    HorizontalAlignment="Center"/>
         </StackPanel>
 
 
         <!--Input Boxes-->
         <StackPanel Grid.Row="1">
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="EmailBox" FontFamily="helvetica"
+                <TextBox x:Name="EmailBox"
                              FontWeight="Light"
                              Text="Email"
                              FontSize="20"
                              HorizontalAlignment="Center"
-                             Foreground="White"
-                             Background="Transparent"
-                             BorderThickness="0"
+                             Foreground="#dee3e2"
+                             BorderBrush="{DynamicResource MaterialDesignBackground}"
                              Width="235"
                              HorizontalContentAlignment="left"
-                             Opacity="0.5"
-                             Height="25"
-                             Margin="63,0,0,0"/>
-                <iconPacks:PackIconMaterial Kind="Email" 
-                                                VerticalAlignment="Center" 
-                                                HorizontalAlignment="Center"
-                                                Foreground="White"/>
+                             Height="30"
+                             Margin="65,0,0,0"/>
+                <iconPacks:PackIconMaterial Kind="Email"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="left"
+                                            Foreground="#dee3e2"/>
             </StackPanel>
-            <Border Width="250"
-                        Height="2"
-                        Background="White"
-                        Opacity="0.5"/>
 
             <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
-                <PasswordBox x:Name="PasswordBox" FontFamily="helvetica"
+                <PasswordBox x:Name="PasswordBox"
                              FontWeight="Light"
                              Password="Password"
                              FontSize="20"
                              HorizontalAlignment="Center"
-                             Foreground="White"
-                             Background="Transparent"
-                             BorderThickness="0"
+                             Foreground="#dee3e2"
+                             BorderBrush="{DynamicResource MaterialDesignBackground}"
                              Width="235"
                              HorizontalContentAlignment="left"
-                             Opacity="0.5"
-                             Height="25"
-                             Margin="63,0,0,0"/>
+                             Height="30"
+                             Margin="65,0,0,0"/>
                 <iconPacks:PackIconMaterial Kind="TextboxPassword" 
                                                 VerticalAlignment="Center" 
                                                 HorizontalAlignment="Center"
-                                                Foreground="White"/>
+                                                Foreground="#dee3e2"/>
             </StackPanel>
-            <Border Width="250"
-                        Height="2"
-                        Background="White"
-                        Opacity="0.5"/>
+            
 
             <StackPanel Orientation="Horizontal" Margin="0,50,0,0">
-                <Button Click="LoginBtn_OnClick" Width="100" Height="40" Content="LOGIN" Margin="60, 0, 60, 0"/>
-                <Button Click="RegisterBtn_OnClick" Width="100" Height="40" Content="REGISTER"/>
+                <Button Click="LoginBtn_OnClick" FontFamily="{DynamicResource MaterialDesignFont}" Foreground="#dee3e2" Width="100" Height="40" Content="LOGIN" Margin="60, 0, 60, 0"/>
+                <Button Click="RegisterBtn_OnClick" FontFamily="{DynamicResource MaterialDesignFont}" Foreground="#dee3e2" Width="100" Height="40" Content="REGISTER"/>
             </StackPanel>
 
-            <Label x:Name="ErrorMessage" Margin="10" Foreground="White" HorizontalAlignment="Center"></Label>
+            <Label x:Name="ErrorMessage" Margin="10" Foreground="#de7119" HorizontalAlignment="Center"></Label>
 
         </StackPanel>
 
