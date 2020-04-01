@@ -12,5 +12,8 @@ namespace CafeMoenenAPI.Models
 
         public DbSet<UserModel> Users { get; set; }
 
+        public DbSet<TableModel> Tables { get; set; }
+
+        public DbSet<ReservationModel> Reservations { get; set; }
     }
 }

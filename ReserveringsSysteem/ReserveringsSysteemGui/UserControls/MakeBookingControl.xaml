@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReserveringsSysteemGui.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -24,15 +25,20 @@
                 <StackPanel Grid.Row="1" Grid.Column="0">
                     <Label>Create a new reservation</Label>
                     <Label>Name</Label>
-                    <TextBox></TextBox>
+                    <TextBox x:Name="CustomerNameBox"></TextBox>
                     <Label>Phonenumber</Label>
-                    <TextBox></TextBox>
+                    <TextBox x:Name="CustomerPhonenumberBox"></TextBox>
                     <Label>Amount of persons</Label>
-                    <TextBox></TextBox>
+                    <TextBox x:Name="AmountOfPersonsBox"></TextBox>
+                    <Label>Setting</Label>
+                    <ComboBox x:Name="settingComboBox"></ComboBox>
                     <Label>Date</Label>
-                    <DatePicker></DatePicker>
-                    <Button>Book</Button>
+                    <DatePicker Name="BookingDatePicker"></DatePicker>
+                    <materialDesign:TimePicker x:Name="BookingTimePicker"></materialDesign:TimePicker>
+                    <Button Click="BookBtn_OnClick">Book</Button>
                 </StackPanel>
+
+                <DataGrid x:Name="reservationsGrid" Grid.Column="1" Grid.Row="1"/>
 
             </Grid>
     </Grid>

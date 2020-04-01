@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.AccessControl;
-using System.Text;
-using ReserveringsSysteemGui.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+using CafeMoenenAPI.Enums;
 
-namespace ReserveringsSysteemGui.Models
+namespace CafeMoenenAPI.Models
 {
-    public class Reservation
+    public class ReservationModel
     {
         public int Id { get; set; }
-
         public string UserCode { get; set; }
 
         public string BookingName { get; set; }
@@ -22,6 +22,6 @@ namespace ReserveringsSysteemGui.Models
 
         public string BookingDateTime { get; set; }
 
-        public List<Table> Tables { get; set; }
+        public List<TableModel> Tables { get; set; }
     }
 }

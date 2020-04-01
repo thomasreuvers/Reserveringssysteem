@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using ReserveringsSysteemGui.Enums;
+using System.Linq;
+using System.Threading.Tasks;
+using CafeMoenenAPI.Enums;
 
-namespace ReserveringsSysteemGui.Models
+namespace CafeMoenenAPI.Models
 {
-    public class Table
+    public class TableModel
     {
         public int Id { get; set; }
 

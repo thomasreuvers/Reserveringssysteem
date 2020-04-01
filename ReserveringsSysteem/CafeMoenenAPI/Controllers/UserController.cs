@@ -24,7 +24,7 @@ namespace CafeMoenenAPI.Controllers
         // TODO: AFVANGEN NULL PROPERTIES
 
 
-        // POST: api/login
+        // POST: api/user/login
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel loginModel)
         {
@@ -41,6 +41,7 @@ namespace CafeMoenenAPI.Controllers
             return Ok(user.WithoutPassword());
         }
 
+        // POST: api/user/register
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterModel registerModel)
         {

@@ -18,7 +18,7 @@ namespace ReserveringsSysteemGui.Handlers
 
         public ApiHandler()
         {
-            _client = new HttpClient {BaseAddress = _baseAddress};
+            _client = new HttpClient { BaseAddress = _baseAddress };
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -51,6 +51,76 @@ namespace ReserveringsSysteemGui.Handlers
             try
             {
                 var response = await _client.PostAsync("/api/user/register", content);
+                _client.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+                return null;
+            }
+        }
+
+        // POST: /api/reservation/makereservation
+        public async Task<string> MakeReservationTask(Reservation model)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("/api/reservation/makereservation", content);
+                _client.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+                return null;
+            }
+        }
+
+        // POST: /api/reservation/getreservations
+        public async Task<string> GetReservationsTask(string userCode)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(userCode), Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("/api/reservation/getreservations", content);
+                _client.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+                return null;
+            }
+        }
+
+        // DELETE: /api/reservation/deletereservations
+        public async Task DeleteReservations()
+        {
+            try
+            {
+                var response = await _client.DeleteAsync("/api/reservation/deletereservations");
+                _client.Dispose();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+            }
+        }
+
+        // GET: /api/reservation/gettables
+        public async Task<string> GetAvailableTablesTask()
+        {
+            try
+            {
+                var response = await _client.GetAsync("/api/reservation/gettables");
                 _client.Dispose();
                 return response.Content.ReadAsStringAsync().Result;
             }
