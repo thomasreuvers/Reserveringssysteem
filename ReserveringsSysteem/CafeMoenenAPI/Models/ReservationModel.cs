@@ -22,6 +22,8 @@ namespace CafeMoenenAPI.Models
 
         public string BookingDateTime { get; set; }
 
+        public string BookingEndDateTime { get; set; }
+
         public List<TableModel> Tables { get; set; }
     }
 }

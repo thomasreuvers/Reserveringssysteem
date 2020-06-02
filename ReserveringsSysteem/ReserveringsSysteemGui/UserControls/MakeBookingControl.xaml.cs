@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,6 @@ using Newtonsoft.Json;
 using ReserveringsSysteemGui.Enums;
 using ReserveringsSysteemGui.Handlers;
 using ReserveringsSysteemGui.Models;
-using Table = ReserveringsSysteemGui.Models.Table;
 using TimeSpan = System.TimeSpan;
 
 namespace ReserveringsSysteemGui.UserControls
@@ -37,34 +37,14 @@ namespace ReserveringsSysteemGui.UserControls
 
             settingComboBox.ItemsSource = Enum.GetValues(typeof(SettingEnumeration)).Cast<SettingEnumeration>();
 
-
-            // _ = RunPeriodicAsync(OnTick, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), CancellationToken.None);
-            _ = UpdateAsync();
-
+            UpdateAsync();
         }
 
-        // Every 5 seconds these calls are executed (delete and get);
+        // Make an async API GET call every 5 sec and get all reservations by usercode and delete all overdue reservations.
+        // We make this call on the background thread so the main UI will not freeze.
         #region Periodic API call
 
-        // private async Task RunPeriodicAsync(Action onTick, TimeSpan dueTime, TimeSpan interval, CancellationToken token)
-        // {
-        //     if (dueTime > TimeSpan.Zero)
-        //     {
-        //         await Task.Delay(dueTime, token);
-        //
-        //         while (!token.IsCancellationRequested)
-        //         {
-        //             onTick?.Invoke();
-        //
-        //             if (interval > TimeSpan.Zero)
-        //             {
-        //                 await Task.Delay(interval, token);
-        //             }
-        //         }
-        //     }
-        // }
-
-        private async Task UpdateAsync()
+        private async void UpdateAsync()
         {
             while (true)
             {
@@ -72,22 +52,36 @@ namespace ReserveringsSysteemGui.UserControls
                 await Task.Delay(TimeSpan.FromSeconds(5));
             }
         }
-
+        
         private async Task OnTick()
         {
-            var apiHandler = new ApiHandler();
-            await Task.Run(() => apiHandler.DeleteReservations());
-            GetUserReservations(_user.UserCode);
+            await Dispatcher.InvokeAsync(async () =>
+            {
+                var apiHandler = new ApiHandler();
+                await Task.Run(() => apiHandler.DeleteReservations());
+                await GetUserReservations(_user.UserCode);
+            });
         }
 
         #endregion
 
+
+        /// <summary>
+        /// Get the current parent window and switch to the default control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BackBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var parent = Window.GetWindow(this);
             parent.Content = new DefaultControl(_user);
         }
 
+        /// <summary>
+        /// Onclick execute this function
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BookBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var apiHandler = new ApiHandler();
@@ -105,15 +99,22 @@ namespace ReserveringsSysteemGui.UserControls
                 BookingName = CustomerNameBox.Text,
                 PhoneNumber = CustomerPhonenumberBox.Text,
                 NumberOfGuests = i,
-                BookingDateTime = (BookingDatePicker.SelectedDate.Value + BookingTimePicker.SelectedTime.Value.TimeOfDay).ToString(CultureInfo.CurrentCulture)
+                BookingDateTime = (BookingDatePicker.SelectedDate.Value + BookingTimePicker.SelectedTime.Value.TimeOfDay).ToString(CultureInfo.CurrentCulture),
+                BookingEndDateTime = (BookingDatePicker.SelectedDate.Value + BookingTimePicker.SelectedTime.Value.TimeOfDay.Add(TimeSpan.FromHours(1))).ToString(CultureInfo.CurrentCulture)
             };
 
             // Get result from LoginUserAsync async
             var result = Task.Run(() => apiHandler.MakeReservationTask(reservation)).Result;
 
+            CustomerNameBox.Text = string.Empty;
+            CustomerPhonenumberBox.Text = string.Empty;
+            AmountOfPersonsBox.Text = string.Empty;
+            settingComboBox.Text = string.Empty;
+            BookingDatePicker.SelectedDate = null;
+            BookingTimePicker.SelectedTime = null;
+
             try
             {
-                // convert to UserModel object
                 MessageBox.Show(JsonConvert.DeserializeObject<string>(result));
             }
             catch (Exception exception)
@@ -123,33 +124,33 @@ namespace ReserveringsSysteemGui.UserControls
             }
         }
 
-        private void GetUserReservations(string userCode)
+        /// <summary>
+        /// Get the reservations of the currently logged in user and fill the reservationsGrid
+        /// </summary>
+        /// <param name="userCode"></param>
+        private async Task GetUserReservations(string userCode)
         {
             var apiHandler = new ApiHandler();
 
-            var result = Task.Run(() => apiHandler.GetReservationsTask(userCode)).Result;
+            var result = await Task.Run(() => apiHandler.GetReservationsTask(userCode));
             var reservations = JsonConvert.DeserializeObject<List<Reservation>>(result);
 
-            if (reservations != null)
-            {
+            var reservationTableObjects = reservations.Select(obj => new ReservationTableObject
+                {
+                    BookingName = obj.BookingName,
+                    BookingDateTime = obj.BookingDateTime,
+                    NumberOfGuests = obj.NumberOfGuests,
+                    PhoneNumber = obj.PhoneNumber,
+                    Setting = obj.Setting
+                })
+                .ToList();
+            reservationsGrid.ItemsSource = reservationTableObjects;
 
-                var reservationTableObjects = reservations.Select(obj => new ReservationTableObject
-                    {
-                        BookingName = obj.BookingName,
-                        BookingDateTime = obj.BookingDateTime,
-                        NumberOfGuests = obj.NumberOfGuests,
-                        PhoneNumber = obj.PhoneNumber,
-                        Setting = obj.Setting
-                    })
-                    .ToList();
-
-                reservationsGrid.Visibility = Visibility.Visible;
-                reservationsGrid.ItemsSource = reservationTableObjects;
-            }
-            else
-            {
-                reservationsGrid.Visibility = Visibility.Hidden;
-            }
+            reservationsGrid.Columns[0].Header = "Reservation name";
+            reservationsGrid.Columns[1].Header = "Phone number";
+            reservationsGrid.Columns[2].Header = "Number of guests";
+            reservationsGrid.Columns[3].Header = "Setting";
+            reservationsGrid.Columns[4].Header = "Reservation time";
         }
 
     }

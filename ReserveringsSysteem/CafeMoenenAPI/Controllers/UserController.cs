@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using CafeMoenenAPI.Helpers;
 using CafeMoenenAPI.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,6 +41,15 @@ namespace CafeMoenenAPI.Controllers
 
             return Ok(user.WithoutPassword());
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout(string userCode)
+        {
+            var user = _dbContext.Users.SingleOrDefault(x => x.UserCode.Equals(userCode));
+
+            return Ok(user);
+        }
+
 
         // POST: api/user/register
         [HttpPost("register")]

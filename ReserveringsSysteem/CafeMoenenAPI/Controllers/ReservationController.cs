@@ -25,7 +25,22 @@ namespace CafeMoenenAPI.Controllers
         [HttpGet("gettables")]
         public IActionResult GetTables()
         {
-            return Ok(_dbContext.Tables.Where(x => x.IsOccupied == false).ToList());
+            return Ok(_dbContext.Tables.ToList());
+        }
+
+        // POST: api/reservation/createtable
+        [HttpPost("createtable")]
+        public IActionResult CreateTable([FromBody] TableModel model)
+        {
+            if (model == null) return BadRequest("Table creation failed");
+
+            var tableCount = _dbContext.Tables.Count();
+            model.IsOccupied = false;
+            model.TableNumber = tableCount + 1;
+            _dbContext.Add(model);
+            _dbContext.SaveChanges();
+            return Ok("Successfully created a new table!");
+
         }
 
         // POST: api/reservation/makereservation
@@ -39,7 +54,7 @@ namespace CafeMoenenAPI.Controllers
 
 
             // Check if there are enough tables left for this reservation
-            if (tables.Count < neededTables) return BadRequest($"The are not enough tables left for this reservation! {model.Setting}");
+            if (tables.Count < neededTables) return BadRequest($"The are not enough tables left for this reservation!");
 
             // Set the reservation object values
             for (var i = 0; i < neededTables; i++)
@@ -49,6 +64,7 @@ namespace CafeMoenenAPI.Controllers
             }
             reservation.UserCode = model.UserCode;
             reservation.BookingDateTime = model.BookingDateTime;
+            reservation.BookingEndDateTime = model.BookingEndDateTime;
             reservation.NumberOfGuests = model.NumberOfGuests;
             reservation.Setting = model.Setting;
             reservation.BookingName = model.BookingName;
@@ -67,6 +83,13 @@ namespace CafeMoenenAPI.Controllers
             return Ok(_dbContext.Reservations.Where(x => x.UserCode == userCode).ToList());
         }
 
+        // GET: api/reservation/getallreservations
+        [HttpGet("getallreservations")]
+        public IActionResult GetAllReservations()
+        {
+            return Ok(_dbContext.Reservations.ToList());
+        }
+
         // DELETE: api/reservation/deletereservations
         /// <summary>
         /// Delete all expired reservations
@@ -77,7 +100,7 @@ namespace CafeMoenenAPI.Controllers
             var reservations = _dbContext.Reservations.OrderBy(x => x.Id).ToList();
             var tables = _dbContext.Tables.OrderBy(x => x.Id).ToList();
 
-            foreach (var reservation in reservations.Where(reservation => Convert.ToDateTime(reservation.BookingDateTime) <= DateTime.Now))
+            foreach (var reservation in reservations.Where(reservation => Convert.ToDateTime(reservation.BookingEndDateTime) <= DateTime.Now))
             {
                 foreach (var table in reservation.Tables)
                 {

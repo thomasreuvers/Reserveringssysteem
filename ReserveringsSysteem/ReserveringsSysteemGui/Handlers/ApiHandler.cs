@@ -11,7 +11,7 @@ using ReserveringsSysteemGui.Models.API_Models;
 
 namespace ReserveringsSysteemGui.Handlers
 {
-    class ApiHandler
+    public class ApiHandler
     {
         private readonly HttpClient _client;
         private readonly Uri _baseAddress = new Uri("https://localhost:44381");
@@ -100,6 +100,23 @@ namespace ReserveringsSysteemGui.Handlers
             }
         }
 
+        // GET: /api/reservation/getallreservations
+        public async Task<string> GetAllReservationsTask()
+        {
+            try
+            {
+                var response = await _client.GetAsync("/api/reservation/getallreservations");
+                _client.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+                return null;
+            }
+        }
+
         // DELETE: /api/reservation/deletereservations
         public async Task DeleteReservations()
         {
@@ -116,11 +133,30 @@ namespace ReserveringsSysteemGui.Handlers
         }
 
         // GET: /api/reservation/gettables
-        public async Task<string> GetAvailableTablesTask()
+        public async Task<string> GetTablesTask()
         {
             try
             {
                 var response = await _client.GetAsync("/api/reservation/gettables");
+                _client.Dispose();
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                _client.Dispose();
+                return null;
+            }
+        }
+
+        // POST: /api/reservation/createtable
+        public async Task<string> CreateTableTask(Table model)
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            try
+            {
+                var response = await _client.PostAsync("/api/reservation/createtable", content);
                 _client.Dispose();
                 return response.Content.ReadAsStringAsync().Result;
             }

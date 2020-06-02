@@ -27,7 +27,17 @@ namespace CafeMoenenAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllHeaders",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
 
             services.AddDbContext<DataContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
@@ -45,6 +55,8 @@ namespace CafeMoenenAPI
 
             app.UseHttpsRedirection();
 
+            app.UseCors("AllowAllHeaders");
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -53,6 +65,7 @@ namespace CafeMoenenAPI
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

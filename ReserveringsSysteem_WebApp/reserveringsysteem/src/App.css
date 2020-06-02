@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+}
+
+.login-form-parent {
+  margin: 0 auto;
+  width: 100%;
+  height: 500px;
+  position: relative;
+}
+
+.loginForm {
+  position: absolute;
+  top: 50%;
+  left: 35%;
+  width: auto;
+  padding: 40px;
+  border-radius: 5px;
+  background-color: #ececec;
+  box-shadow: 8px 8px 50px 1px #222831;
+}
+
+.loginForm h2 {
+  padding: 10px;
+}
+
+.inputField {
+  margin: 20px 0 20px 0;
+  width: 100%;
+}
+
+.upper-body {
+  padding: 50px 0 50px 0;
+  width: 100%;
+}

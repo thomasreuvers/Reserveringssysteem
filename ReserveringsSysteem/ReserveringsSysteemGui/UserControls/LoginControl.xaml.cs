@@ -32,14 +32,22 @@ namespace ReserveringsSysteemGui.UserControls
         }
 
 
-        // Close and dispose window
+        /// <summary>
+        /// Close and dispose window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseWindowBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var parent = Window.GetWindow(this);
             parent.Close();
         }
 
-        // Close the parent and show the main window
+        /// <summary>
+        /// Close the parent and show the main window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void LoginBtn_OnClick(object sender, RoutedEventArgs e)
         {
 
@@ -58,7 +66,7 @@ namespace ReserveringsSysteemGui.UserControls
 
             try
             {
-                // convert to UserModel object
+                // Try to convert result to UserModel object
                 var userModel = JsonConvert.DeserializeObject<UserModel>(result);
 
                 // Authentication was successful switch to main app screen
@@ -77,6 +85,11 @@ namespace ReserveringsSysteemGui.UserControls
             #endregion
         }
 
+        /// <summary>
+        /// Get the parent window and set it's content as Register control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RegisterBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var parent = Window.GetWindow(this);

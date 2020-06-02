@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ReserveringsSysteemGui.Models.API_Models
 {
-    class RegisterModel
+    public class RegisterModel
     {
         public string EmailAddress { get; set; }
 

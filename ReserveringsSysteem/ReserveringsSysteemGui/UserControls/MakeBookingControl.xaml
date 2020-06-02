@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ReserveringsSysteemGui.UserControls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -19,11 +20,13 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal">
-                    <Button Click="BackBtn_OnClick">Back</Button>
+                <Button Click="BackBtn_OnClick">
+                    <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="15" Foreground="#dee3e2"/>
+                </Button>
                 </StackPanel>
 
-                <StackPanel Grid.Row="1" Grid.Column="0">
-                    <Label>Create a new reservation</Label>
+                <StackPanel Grid.Row="1" Grid.Column="0" Width="300" Margin="10">
+                <Label FontSize="20" HorizontalContentAlignment="Center" >Create a new reservation</Label>
                     <Label>Name</Label>
                     <TextBox x:Name="CustomerNameBox"></TextBox>
                     <Label>Phonenumber</Label>
@@ -38,7 +41,14 @@
                     <Button Click="BookBtn_OnClick">Book</Button>
                 </StackPanel>
 
-                <DataGrid x:Name="reservationsGrid" Grid.Column="1" Grid.Row="1"/>
+                <DataGrid CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserReorderColumns="False"
+                          CanUserResizeColumns="False"
+                          CanUserResizeRows="False"
+                          CanUserSortColumns="False"
+                          x:Name="reservationsGrid"
+                          Grid.Column="1" Grid.Row="1"/>
 
             </Grid>
     </Grid>

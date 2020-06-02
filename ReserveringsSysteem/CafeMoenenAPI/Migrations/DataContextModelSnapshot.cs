@@ -26,6 +26,9 @@ namespace CafeMoenenAPI.Migrations
                     b.Property<string>("BookingDateTime")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("BookingEndDateTime")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<string>("BookingName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 

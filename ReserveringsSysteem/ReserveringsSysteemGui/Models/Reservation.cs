@@ -22,6 +22,8 @@ namespace ReserveringsSysteemGui.Models
 
         public string BookingDateTime { get; set; }
 
+        public string BookingEndDateTime { get; set; }
+
         public List<Table> Tables { get; set; }
     }
 }
